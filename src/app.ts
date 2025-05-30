@@ -1,5 +1,7 @@
 import express from 'express';
 import cors from 'cors';
+import { swaggerUiHandler, swaggerUiSetup } from './config/swagger';
+import automovelRoutes from './routes/automovel.routes';
 
 const app = express();
 
@@ -10,7 +12,9 @@ app.use(cors());                // Permitir requisições cross-origin
 app.use(express.json());        // Body parser para JSON
 
 // Rotas
-// app.use('/automoveis', automovelRoutes);
+console.log("rotas")
+app.use('/automobiles/', automovelRoutes);
+app.use('/docs', swaggerUiHandler, swaggerUiSetup);
 
 // Health check
 app.get('/', (req, res) => {

@@ -1,0 +1,136 @@
+openapi: 3.0.0
+info:
+  title: API de Automóveis
+  version: 1.0.0
+  description: API para gerenciamento de automóveis.
+
+paths:
+  /automobiles:
+    post:
+      summary: Cria um novo automóvel
+      tags:
+        - Automóveis
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AutomovelInput'
+      responses:
+        '201':
+          description: Automóvel criado com sucesso
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Automovel'
+        '400':
+          description: Requisição inválida
+
+    get:
+      summary: Lista todos os automóveis
+      tags:
+        - Automóveis
+      responses:
+        '200':
+          description: Lista de automóveis
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Automovel'
+        '500':
+          description: Erro interno do servidor
+
+  /automobiles/{id}:
+    get:
+      summary: Obtém os dados de um automóvel específico
+      tags:
+        - Automóveis
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Dados do automóvel
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Automovel'
+        '404':
+          description: Automóvel não encontrado
+
+    put:
+      summary: Atualiza um automóvel existente
+      tags:
+        - Automóveis
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AutomovelInput'
+      responses:
+        '200':
+          description: Automóvel atualizado com sucesso
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Automovel'
+        '400':
+          description: Requisição inválida
+        '404':
+          description: Automóvel não encontrado
+
+    delete:
+      summary: Remove um automóvel
+      tags:
+        - Automóveis
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '204':
+          description: Automóvel removido com sucesso
+        '404':
+          description: Automóvel não encontrado
+
+components:
+  schemas:
+    AutomovelInput:
+      type: object
+      required:
+        - placa
+        - cor
+        - marca
+      properties:
+        placa:
+          type: string
+          example: "ABC-1234"
+        cor:
+          type: string
+          example: "Prata"
+        marca:
+          type: string
+          example: "Toyota"
+
+    Automovel:
+      allOf:
+        - $ref: '#/components/schemas/AutomovelInput'
+        - type: object
+          properties:
+            id:
+              type: string
+              example: "60c72b2f9e1d4c001f5a3d2b"
