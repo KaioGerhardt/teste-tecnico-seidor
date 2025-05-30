@@ -13,36 +13,36 @@ export class AutomovelService {
     }
 
     try{
-      console.log('Verificando se já existe um automóvel com a placa:', placa);
       const exists = await AutomovelRepository.findByPlaca(placa);
       if (exists) {
         throw new Error('Já existe um automóvel com essa placa');
       }
 
-      console.log('teste', exists)
-
-      console.log('Criando novo automóvel com os dados:', { placa, cor, marca });
-  
       return await AutomovelRepository.create(placa, cor, marca);
 
     }catch (error) {
-      if (error instanceof Error) {
-        throw new Error(`Erro ao criar automóvel: ${error.message}`);
-      } else {
-        throw new Error('Erro ao criar automóvel: erro desconhecido');
-      }
+      throw new Error(`Erro ao criar automóvel: ${(error as Error).message}`);
     }
 
   }
 
   static async list(): Promise<Automovel[]> {
-    const result = await db.query('SELECT * FROM automoveis ORDER BY id ASC');
-    return result.rows;
+    try {
+      return await AutomovelRepository.findAll();
+
+    } catch (error) {
+      throw new Error(`Erro ao listar automóveis: ${(error as Error).message}`);
+    }
   }
 
   static async getById(id: number): Promise<Automovel | null> {
-    const result = await db.query('SELECT * FROM automoveis WHERE id = $1', [id]);
-    return result.rows[0] || null;
+    try {
+      const automovel = await AutomovelRepository.findById(id);
+      return automovel;
+      
+    } catch (error) {
+      throw new Error(`Erro ao buscar automóvel: ${(error as Error).message}`);
+    }
   }
 
   static async update(id: number, data: Partial<Automovel>): Promise<Automovel> {
@@ -64,9 +64,15 @@ export class AutomovelService {
   }
 
   static async delete(id: number): Promise<void> {
-    const result = await db.query('DELETE FROM automoveis WHERE id = $1', [id]);
-    if (result.rowCount === 0) {
-      throw new Error('Automóvel não encontrado');
+    try{
+      const automovel = await this.getById(id);
+      if (!automovel) {
+        throw new Error('Automóvel não encontrado');
+      }
+
+      await AutomovelRepository.delete(id);
+    }catch(error) {
+      throw new Error(`Erro ao deletar automóvel: ${(error as Error).message}`);
     }
   }
 }

@@ -1,55 +1,48 @@
-import { db } from '../database/connection';
+import { Automovel } from '../models/automovel.model';
+
+let automoveis : Automovel[] = [];
+let id = 1;
 
 export class AutomovelRepository {
   static async create(placa: string, cor: string, marca: string) {
-    const query = `
-      INSERT INTO automoveis (placa, cor, marca)
-      VALUES ($1, $2, $3)
-      RETURNING *;
-    `;
-    const result = await db.query(query, [placa, cor, marca]);
-    return result.rows[0];
+
+    const novoAutomovel = {id: id++, placa, cor, marca};
+    automoveis.push(novoAutomovel);
+
+    return novoAutomovel;
   }
 
   static async findByPlaca(placa: string) {
-    const query = `
-      SELECT * FROM automoveis WHERE placa = $1;
-    `;
-    const result = await db.query(query, [placa]);
-    return result.rows[0] || null;
+    return automoveis.find(a => a.placa === placa) || null;
   }
 
   static async findAll() {
-    const query = `
-      SELECT * FROM automoveis ORDER BY id ASC;
-    `;
-    const result = await db.query(query);
-    return result.rows;
+    return automoveis;
   }
 
   static async findById(id: number) {
-    const query = `
-      SELECT * FROM automoveis WHERE id = $1;
-    `;
-    const result = await db.query(query, [id]);
-    return result.rows[0] || null;
+    return automoveis.find(a => a.id === id) || null;
   }
 
   static async update(id: number, placa: string, cor: string, marca: string) {
-    const query = `
-      UPDATE automoveis
-      SET placa = $1, cor = $2, marca = $3
-      WHERE id = $4
-      RETURNING *;
-    `;
-    const result = await db.query(query, [placa, cor, marca, id]);
-    return result.rows[0];
+    const automovel = automoveis.find(a => a.id === id);
+    if (!automovel) {
+      return null;
+    }
+    
+    automovel.placa = placa;
+    automovel.cor = cor;
+    automovel.marca = marca;
+    return automovel;
   }
 
   static async delete(id: number) {
-    const query = `
-      DELETE FROM automoveis WHERE id = $1;
-    `;
-    return await db.query(query, [id]);
+    const index = automoveis.findIndex(a => a.id === id);
+    
+    if (index !== -1) {
+      const [removed] = automoveis.splice(index, 1);
+      return removed;
+    }
+    return null;
   }
 }
