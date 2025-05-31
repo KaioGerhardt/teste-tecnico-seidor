@@ -70,3 +70,11 @@ export class AutomovelRepository {
     return null;
   }
 }
+
+// Apenas para testes
+export const __test_only__ = {
+  reset: () => {
+    automoveis.length = 0;
+    id = 1;
+  }
+};

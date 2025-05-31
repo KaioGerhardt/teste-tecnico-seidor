@@ -46,21 +46,27 @@ export class AutomovelService {
   }
 
   static async update(id: number, data: Partial<Automovel>): Promise<Automovel> {
-    const existing = await this.getById(id);
-    if (!existing) throw new Error('Automóvel não encontrado');
+    try{
+      const existing = await this.getById(id);
+      if (!existing) throw new Error('Automóvel não encontrado');
 
-    const { placa, cor, marca } = { ...existing, ...data };
+      // substitui os dados existentes do veiculo pelos novos vindo da requisição
+      const updatedAutomovel = { ...existing, ...data };
 
-    const query = `
-      UPDATE automoveis
-      SET placa = $1, cor = $2, marca = $3
-      WHERE id = $4
-      RETURNING *;
-    `;
-    const values = [placa, cor, marca, id];
+      const { placa, cor, marca } = updatedAutomovel;
+      if (!placa || !cor || !marca) {
+        throw new Error('Placa, cor e marca são obrigatórios');
+      }
 
-    const result = await db.query(query, values);
-    return result.rows[0];
+      const updated = await AutomovelRepository.update(id, placa, cor, marca);
+      if (!updated) {
+        throw new Error('Erro ao atualizar automóvel');
+      }
+
+      return updated;
+    }catch (error) {
+      throw new Error(`Erro ao buscar automóvel: ${(error as Error).message}`);
+    }
   }
 
   static async delete(id: number): Promise<void> {
