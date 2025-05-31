@@ -1,0 +1,137 @@
+openapi: 3.0.0
+info:
+  title: API de Motoristas
+  version: 1.0.0
+  description: API para gerenciamento de motoristas.
+
+paths:
+  /motorista:
+    post:
+      summary: Cria um novo motorista
+      tags:
+        - Motoristas
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/MotoristaInput'
+      responses:
+        '201':
+          description: Motorista criado com sucesso
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Motorista'
+        '400':
+          description: Requisição inválida
+        '500':
+          description: Erro ao criar motorista
+
+    get:
+      summary: Lista todos os motoristas
+      tags:
+        - Motoristas
+      parameters:
+        - name: nome
+          in: query
+          required: false
+          schema:
+            type: string
+          description: Filtrar motoristas pelo nome
+      responses:
+        '200':
+          description: Lista de motoristas
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Motorista'
+        '500':
+          description: Erro interno do servidor
+
+  /motorista/{id}:
+    get:
+      summary: Obtém os dados de um motorista específico
+      tags:
+        - Motoristas
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Dados do motorista
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Motorista'
+        '404':
+          description: Motorista não encontrado
+
+    put:
+      summary: Atualiza um motorista existente
+      tags:
+        - Motoristas
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/MotoristaInput'
+      responses:
+        '200':
+          description: Motorista atualizado com sucesso
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Motorista'
+        '400':
+          description: Requisição inválida
+        '404':
+          description: Motorista não encontrado
+
+    delete:
+      summary: Remove um motorista
+      tags:
+        - Motoristas
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '204':
+          description: Motorista removido com sucesso
+        '404':
+          description: Motorista não encontrado
+
+components:
+  schemas:
+    MotoristaInput:
+      type: object
+      required:
+        - nome
+      properties:
+        nome:
+          type: string
+          example: "João da Silva"
+
+    Motorista:
+      allOf:
+        - $ref: '#/components/schemas/MotoristaInput'
+        - type: object
+          properties:
+            id:
+              type: integer
+              example: 1
