@@ -30,6 +30,19 @@ paths:
       summary: Lista todos os automóveis
       tags:
         - Automóveis
+      parameters:
+        - name: cor
+          in: query
+          required: false
+          schema:
+            type: string
+          description: Filtrar automóveis pela cor
+        - name: marca
+          in: query
+          required: false
+          schema:
+            type: string
+          description: Filtrar automóveis pela marca
       responses:
         '200':
           description: Lista de automóveis

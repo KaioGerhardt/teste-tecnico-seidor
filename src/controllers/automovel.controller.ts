@@ -13,7 +13,9 @@ export class AutomovelController {
 
   static async list(req: Request, res: Response): Promise<void> {
     try {
-      const automoveis = await AutomovelService.list();
+      const { cor, marca } = req.query;
+      const automoveis = await AutomovelService.list(cor as string, marca as string);
+
       res.status(200).json(automoveis);
     } catch (error: any) {
       res.status(500).json({ error: error.message });

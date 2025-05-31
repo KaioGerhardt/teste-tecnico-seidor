@@ -26,9 +26,9 @@ export class AutomovelService {
 
   }
 
-  static async list(): Promise<Automovel[]> {
+  static async list(cor?: string, marca?: string): Promise<Automovel[]> {
     try {
-      return await AutomovelRepository.findAll();
+      return await AutomovelRepository.findAll(cor, marca);
 
     } catch (error) {
       throw new Error(`Erro ao listar automóveis: ${(error as Error).message}`);
