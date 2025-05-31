@@ -1,13 +1,11 @@
 import { AutomovelService } from '../../src/services/automovel.service';
-import { AutomovelRepository } from '../../src/repositories/automovel.repository';
 import { Automovel } from '../../src/models/automovel.model';
+import { __test_only__ as testRepoTools } from '../../src/repositories/automovel.repository';
 
 // Utilitário para resetar o repositório em memória
 const resetRepository = () => {
   // @ts-ignore - acesso forçado para fins de teste
-  AutomovelRepository['automoveis'] = [];
-  // @ts-ignore
-  AutomovelRepository['id'] = 1;
+  testRepoTools.reset();
 };
 
 describe('AutomovelService.create', () => {
