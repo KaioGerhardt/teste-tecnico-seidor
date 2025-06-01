@@ -12,7 +12,7 @@ export class MotoristaService {
 
     try{
       const exists = await MotoristaRepository.findByName(nome);
-      if (exists) {
+      if (exists && exists.length > 0) {
         throw new Error('Já existe um motorista com esse nome');
       }
 
