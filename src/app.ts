@@ -3,6 +3,7 @@ import cors from 'cors';
 import { swaggerUiHandler, swaggerUiSetup } from './config/swagger';
 import automovelRoutes from './routes/automovel.routes';
 import motoristaRoutes from './routes/motorista.routes';
+import utilizacaoRoutes from './routes/motorista.routes';
 
 const app = express();
 
@@ -16,6 +17,7 @@ app.use(express.json());        // Body parser para JSON
 console.log("rotas")
 app.use('/automovel/', automovelRoutes);
 app.use('/motorista/', motoristaRoutes);
+app.use('/utilizacao/', utilizacaoRoutes);
 app.use('/docs', swaggerUiHandler, swaggerUiSetup);
 
 // Health check
