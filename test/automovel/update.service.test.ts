@@ -21,7 +21,7 @@ describe('AutomovelService.update', () => {
       marca: 'Fiat',
     });
 
-    const atualizado = await AutomovelService.update(criado.id, {
+    const atualizado = await AutomovelService.update(criado.id!, {
       placa: 'XYZ5678',
       cor: 'Branco',
       marca: 'VW',
@@ -41,7 +41,7 @@ describe('AutomovelService.update', () => {
       marca: 'Toyota',
     });
 
-    const atualizado = await AutomovelService.update(criado.id, {
+    const atualizado = await AutomovelService.update(criado.id!, {
       cor: 'Verde',
     });
 
@@ -58,7 +58,7 @@ describe('AutomovelService.update', () => {
       marca: 'Renault',
     });
 
-    const atualizado = await AutomovelService.update(criado.id, {
+    const atualizado = await AutomovelService.update(criado.id!, {
       marca: 'Nissan',
     });
 
@@ -81,12 +81,12 @@ describe('AutomovelService.update', () => {
       marca: 'Peugeot',
     });
 
-    const atualizado = await AutomovelService.update(criado.id, {
+    const atualizado = await AutomovelService.update(criado.id!, {
       placa: 'PPP5678'
     });
 
     expect(atualizado.placa).toBe('PPP5678');
-    expect(atualizado.cor).toBe('Roxo');     // não deve ter mudado
-    expect(atualizado.marca).toBe('Peugeot'); // não deve ter mudado
+    expect(atualizado.cor).toBe('Roxo');
+    expect(atualizado.marca).toBe('Peugeot');
   });
 });

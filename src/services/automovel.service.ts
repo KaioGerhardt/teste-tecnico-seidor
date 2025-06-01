@@ -1,5 +1,4 @@
 import { Automovel } from '../models/automovel.model';
-import { db } from '../database/connection';
 import { AutomovelRepository } from '../repositories/automovel.repository';
 
 
