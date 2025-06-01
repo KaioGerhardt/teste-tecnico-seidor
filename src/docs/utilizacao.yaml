@@ -1,0 +1,136 @@
+openapi: 3.0.0
+info:
+  title: API de Utilizações de Automóveis
+  version: 1.0.0
+  description: API para registrar e gerenciar a utilização de automóveis por motoristas.
+
+paths:
+  /utilizacao:
+    post:
+      summary: Registra uma nova utilização de automóvel por um motorista
+      tags:
+        - Utilizações
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UtilizacaoInput'
+      responses:
+        '201':
+          description: Utilização registrada com sucesso
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Utilizacao'
+        '400':
+          description: Requisição inválida
+        '500':
+          description: Erro interno ao criar utilização
+
+    get:
+      summary: Lista todas as utilizações com informações de motorista e automóvel
+      tags:
+        - Utilizações
+      responses:
+        '200':
+          description: Lista de utilizações detalhadas
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/UtilizacaoDetalhada'
+        '500':
+          description: Erro interno ao listar utilizações
+
+  /utilizacao/{id}/finalizar:
+    put:
+      summary: Finaliza uma utilização em andamento com base no ID do motorista
+      tags:
+        - Utilizações
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+          description: ID do motorista
+      responses:
+        '200':
+          description: Utilização finalizada com sucesso
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Utilizacao'
+        '400':
+          description: Erro ao finalizar utilização
+        '404':
+          description: Utilização não encontrada
+
+components:
+  schemas:
+    UtilizacaoInput:
+      type: object
+      required:
+        - idMotorista
+        - idAutomovel
+      properties:
+        idMotorista:
+          type: integer
+          example: 1
+        idAutomovel:
+          type: integer
+          example: 2
+        motivo:
+          type: string
+          example: "Viagem a trabalho"
+
+    Utilizacao:
+      type: object
+      properties:
+        id:
+          type: integer
+          example: 10
+        idMotorista:
+          type: integer
+          example: 1
+        idAutomovel:
+          type: integer
+          example: 2
+        motivo:
+          type: string
+          example: "Viagem a trabalho"
+        dataInicio:
+          type: string
+          format: date-time
+          example: "2025-05-31T09:00:00Z"
+        dataFim:
+          type: string
+          format: date-time
+          nullable: true
+          example: null
+
+    UtilizacaoDetalhada:
+      type: object
+      properties:
+        automovel:
+          type: object
+          description: Dados do automóvel
+          properties:
+            id:
+              type: integer
+              example: 2
+            placa:
+              type: string
+              example: "ABC-1234"
+            marca:
+              type: string
+              example: "Toyota"
+            cor:
+              type: string
+              example: "Prata"
+        motorista:
+          type: string
+          description: Nome do motorista
+          example: "João da Silva"
