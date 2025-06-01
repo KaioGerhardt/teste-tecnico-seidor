@@ -3,7 +3,7 @@ import cors from 'cors';
 import { swaggerUiHandler, swaggerUiSetup } from './config/swagger';
 import automovelRoutes from './routes/automovel.routes';
 import motoristaRoutes from './routes/motorista.routes';
-import utilizacaoRoutes from './routes/motorista.routes';
+import utilizacaoRoutes from './routes/utilizacao.routes';
 
 const app = express();
 

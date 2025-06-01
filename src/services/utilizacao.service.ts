@@ -52,6 +52,10 @@ export class UtilizacaoService {
         throw new Error('Utilização não encontrada para o motorista informado');
       }
 
+      if(utilizacao.dataFim) {
+        throw new Error('A utilização já foi finalizada');
+      }
+
       return await UtilizacaoRepository.finalize(utilizacao);
     }catch (error) {
       throw new Error(`Erro ao finalizar utilização: ${(error as Error).message}`);
