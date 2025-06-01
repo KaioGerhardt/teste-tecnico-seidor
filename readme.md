@@ -73,7 +73,7 @@ Todos os testes de unidade estão localizados em **tests/** e usam persistência
 A documentação completa dos endpoints está disponível via Swagger em:
 
    ```bash
-   http://localhost:3000/api-docs
+   http://localhost:3000/docs
    ```
 
 Inclui detalhes de:

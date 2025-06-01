@@ -7,14 +7,10 @@ import utilizacaoRoutes from './routes/utilizacao.routes';
 
 const app = express();
 
-// Middlewares globais
-// app.use(helmet());              // Segurança HTTP
-app.use(cors());                // Permitir requisições cross-origin
-// app.use(morgan('dev'));         // Logs de requisições
-app.use(express.json());        // Body parser para JSON
+app.use(cors()); 
+app.use(express.json());
 
 // Rotas
-console.log("rotas")
 app.use('/automovel/', automovelRoutes);
 app.use('/motorista/', motoristaRoutes);
 app.use('/utilizacao/', utilizacaoRoutes);
